@@ -75,7 +75,7 @@ func main() {
 				tmpl.Execute(os.Stdout, &struct {
 					Text, Translated string
 				}{
-					Text:       c.String("text"),
+					Text:       text,
 					Translated: translated,
 				})
 			} else {
