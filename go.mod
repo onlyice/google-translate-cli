@@ -1,4 +1,4 @@
-module google-translate-cli
+module github.com/onlyice/google-translate-cli
 
 go 1.16
 

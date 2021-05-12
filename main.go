@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"fmt"
 	"github.com/bregydoc/gtranslate"
 	"github.com/urfave/cli/v2"
 	"html/template"
@@ -39,6 +40,10 @@ func main() {
 				Usage:    "the text to be translated",
 				Required: true,
 			},
+			&cli.BoolFlag{
+				Name:     "html",
+				Usage: "output html content",
+			},
 		},
 		Action: func(c *cli.Context) error {
 			translated, err := gtranslate.TranslateWithParams(
@@ -53,12 +58,16 @@ func main() {
 				panic(err)
 			}
 
-			tmpl.Execute(os.Stdout, &struct {
-				Text, Translated string
-			}{
-				Text: c.String("text"),
-				Translated: translated,
-			})
+			if c.Bool("html") {
+				tmpl.Execute(os.Stdout, &struct {
+					Text, Translated string
+				}{
+					Text: c.String("text"),
+					Translated: translated,
+				})
+			} else {
+				fmt.Println(translated)
+			}
 			return nil
 		},
 	}
