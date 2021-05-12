@@ -21,4 +21,4 @@ go get github.com/onlyice/google-translate-cli
 
 ## 搭配 GoldenDict 使用
 
-本工具提供了 `--html` 选项用于生成 HTML；而 GoldenDict 的词典来源可以是某个程序的输出结果。因此你可以搭配 GoldenDict 来翻译。具体配置方法你摸索一下就懂了。
+本工具提供了 `--gd` 选项用于生成适用于 GoldenDict (GD) 的 HTML；而 GD 的词典来源可以是某个程序的输出结果。因此你可以搭配 GD 来翻译。具体配置方法你摸索一下就懂了。

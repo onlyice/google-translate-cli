@@ -7,6 +7,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"html/template"
 	"log"
+	"net/url"
 	"os"
 )
 
@@ -41,13 +42,25 @@ func main() {
 				Required: true,
 			},
 			&cli.BoolFlag{
-				Name:     "html",
-				Usage: "output html content",
+				Name:  "gd",
+				Usage: "output html content for GoldenDict",
 			},
 		},
 		Action: func(c *cli.Context) error {
+			text := c.String("text")
+
+			gd := c.Bool("gd")
+			if gd {
+				// GoldenDict 会把文本用 percentage encoding 转换之后传进来
+				var err error
+				text, err = url.QueryUnescape(text)
+				if err != nil {
+					return err
+				}
+			}
+
 			translated, err := gtranslate.TranslateWithParams(
-				c.String("text"),
+				text,
 				gtranslate.TranslationParams{
 					From:       c.String("from"),
 					To:         c.String("to"),
@@ -58,11 +71,11 @@ func main() {
 				panic(err)
 			}
 
-			if c.Bool("html") {
+			if gd {
 				tmpl.Execute(os.Stdout, &struct {
 					Text, Translated string
 				}{
-					Text: c.String("text"),
+					Text:       c.String("text"),
 					Translated: translated,
 				})
 			} else {
